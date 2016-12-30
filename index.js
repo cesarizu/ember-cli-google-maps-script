@@ -1,23 +1,23 @@
 /* jshint node: true */
 'use strict';
 
-var url = '//maps.googleapis.com/maps/api/js?sensor=false';
+const BASE_URL = '//maps.googleapis.com/maps/api/js';
 
 module.exports = {
   name: 'ember-cli-google-maps-script',
   contentFor: function(type, config) {
-    var env = config.environment;
-    var configuration = config['google-maps-script'];
-    var clientId = configuration.clientId;
-    var key = configuration.key;
+    if (type === 'head-footer' && config.environment !== 'test') {
+      let configuration = config['google-maps-script'];
+      let language = configuration.language;
+      let libraries = configuration.libraries;
+      let url = BASE_URL + '?key=' + configuration.key;
 
-    if (type === 'head-footer' && env !== 'test') {
-      if (clientId) {
-        url += '&client=' + clientId;
+      if (language) {
+        url += '&language=' + language;
       }
 
-      if (key) {
-        url += '&key=' + key;
+      if (libraries) {
+        url += '&libraries=' + libraries;
       }
 
       return '<script src="' + url + '"></script>';
